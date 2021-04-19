@@ -1,28 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".FirstFragment">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:bind="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <TextView
-        android:id="@+id/textview_first"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/hello_first_fragment"
-        app:layout_constraintBottom_toTopOf="@id/button_first"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <data>
 
-    <Button
-        android:id="@+id/button_first"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/next"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textview_first" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <variable
+            name="movies"
+            type="com.example.mycinema.database.Movies" />
+    </data>
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/movie_list_ll"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            tools:context=".FirstFragment">
+
+            <include
+                android:id="@+id/movie_1"
+                layout="@layout/movie_list_item"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                bind:movie="@{movies.list[0]}" />
+
+            <include
+                android:id="@+id/movie_2"
+                layout="@layout/movie_list_item"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                bind:movie="@{movies.list[1]}" />
+
+            <include
+                android:id="@+id/movie_3"
+                layout="@layout/movie_list_item"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                bind:movie="@{movies.list[2]}" />
+
+            <include
+                android:id="@+id/movie_4"
+                layout="@layout/movie_list_item"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                bind:movie="@{movies.list[3]}" />
+
+            <include
+                android:id="@+id/movie_5"
+                layout="@layout/movie_list_item"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                bind:movie="@{movies.list[4]}" />
+
+        </LinearLayout>
+    </ScrollView>
+</layout>
