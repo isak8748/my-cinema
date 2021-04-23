@@ -7,6 +7,17 @@
         <variable
             name="movie"
             type="com.example.mycinema.model.Movie" />
+        <variable
+            name="movie_detail"
+            type="com.example.mycinema.model.MovieDetail" />
+        <variable
+            name="genres_string"
+            type="String" />
+        <variable
+            name="imdb_url"
+            type="String" />
+
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -35,6 +46,41 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/movie_detail_backdrop" />
 
+        <TextView
+            android:id="@+id/movie_detail_website"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:autoLink="all"
+            android:text="@{movie_detail.website}"
+            android.textSize="12sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/movie_detail_title" />
+
+        <TextView
+            android:id="@+id/movie_detail_genres"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="@{genres_string}"
+            android.textSize="12sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/movie_detail_website" />
+
+        <TextView
+            android:id="@+id/movie_detail_imdb"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:autoLink="all"
+            android.textSize="12sp"
+            android:text="@{imdb_url.concat(movie_detail.imdb_id)}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/movie_detail_genres" />
+
         <Button
             android:id="@+id/back_to_movie_list"
             android:layout_width="wrap_content"
@@ -44,5 +90,15 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
+
+        <Button
+            android:id="@+id/to_third_fragment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="To next fragment"
+            app:layout_constraintBottom_toTopOf="@+id/back_to_movie_list"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

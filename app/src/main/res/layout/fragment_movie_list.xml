@@ -8,6 +8,10 @@
         <variable
             name="movies"
             type="com.example.mycinema.database.Movies" />
+        <variable
+            name="movie_details"
+            type="com.example.mycinema.database.MovieDetails" />
+
     </data>
 
 

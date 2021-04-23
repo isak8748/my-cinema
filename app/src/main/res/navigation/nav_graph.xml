@@ -27,5 +27,23 @@
         <argument
             android:name="movie"
             app:argType="com.example.mycinema.model.Movie" />
+        <action
+            android:id="@+id/action_MovieDetailFragment_to_ThirdFragment"
+            app:destination="@id/ThirdFragment"/>
+    </fragment>
+    <fragment
+        android:id="@+id/ThirdFragment"
+        android:name="com.example.mycinema.ThirdFragment"
+        android:label="@string/third_fragment_label"
+        tools:layout="@layout/fragment_movie_detail">
+        <action
+            android:id="@+id/action_ThirdFragment_to_MovieDetailFragment"
+            app:destination="@id/MovieDetailFragment" />
+        <argument
+            android:name="movie"
+            app:argType="com.example.mycinema.model.Movie" />
+        <action
+            android:id="@+id/action_ThirdFragment_to_MovieListFragment"
+            app:destination="@id/MovieListFragment"/>
     </fragment>
 </navigation>
