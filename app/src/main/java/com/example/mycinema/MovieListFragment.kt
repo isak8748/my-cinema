@@ -3,16 +3,20 @@ package com.example.mycinema
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.example.mycinema.database.MovieDatabase
+import com.example.mycinema.database.MovieDatabaseDao
 import com.example.mycinema.database.Movies
 import com.example.mycinema.databinding.FragmentMovieListBinding
 import com.example.mycinema.databinding.MovieListItemBinding
 import com.example.mycinema.viewmodel.MovieListViewModel
 import com.example.mycinema.viewmodel.MovieListViewModelFactory
+import timber.log.Timber
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
@@ -21,6 +25,8 @@ class MovieListFragment : Fragment() {
 
     private lateinit var viewModel: MovieListViewModel
     private lateinit var  viewModelFactory: MovieListViewModelFactory
+
+    private lateinit var movieDatabaseDao: MovieDatabaseDao
 
     private var _binding: FragmentMovieListBinding? = null
     private val binding get() = _binding!!
@@ -34,7 +40,8 @@ class MovieListFragment : Fragment() {
         _binding = FragmentMovieListBinding.inflate(inflater)
 
         val application = requireNotNull(this.activity).application
-        viewModelFactory = MovieListViewModelFactory(application)
+        movieDatabaseDao = MovieDatabase.getInstance(application).movieDatabaseDao
+        viewModelFactory = MovieListViewModelFactory(movieDatabaseDao, application)
         viewModel = ViewModelProvider(this, viewModelFactory).get(MovieListViewModel::class.java)
 
             viewModel.movieList.observe(viewLifecycleOwner, { movieList ->
@@ -47,9 +54,34 @@ class MovieListFragment : Fragment() {
                     binding.movieListLl.addView(movieListItemBinding.root)
                 }
             }
+
         )
+        setHasOptionsMenu(true)
 
         return binding.root
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        return when (item.itemId) {
+            R.id.action_load_popular_movies -> {
+             true
+            }
+            R.id.action_load_top_rated_movies -> {
+                viewModel.addMovie()
+                Timber.i("Adding dummy movie")
+                true
+            }
+            R.id.action_load_saved_movies -> {
+                viewModel.getSavedMovies()
+                Timber.i("Getting saved movie")
+                true
+            }
+
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

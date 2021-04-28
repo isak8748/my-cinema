@@ -6,7 +6,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import kotlinx.parcelize.Parcelize
 
-/*@Parcelize
+@Parcelize
 @Entity(tableName = "movies")
 data class Movie(
         @PrimaryKey()
@@ -21,9 +21,9 @@ data class Movie(
         var releaseDate: String,
         @ColumnInfo(name = "overview")
         var overview: String
-) : Parcelable*/
+) : Parcelable
 
-@Parcelize
+/*@Parcelize
 data class Movie(
         var id: Long = 0L,
         var title: String,
@@ -31,4 +31,4 @@ data class Movie(
         var backdropPath: String,
         var releaseDate: String,
         var overview: String
-) : Parcelable
+) : Parcelable*/
