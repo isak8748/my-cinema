@@ -9,6 +9,8 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.example.mycinema.adapter.MovieListAdapter
+import com.example.mycinema.adapter.MovieListClickListener
 import com.example.mycinema.database.MovieDatabase
 import com.example.mycinema.database.MovieDatabaseDao
 import com.example.mycinema.database.Movies
@@ -44,7 +46,27 @@ class MovieListFragment : Fragment() {
         viewModelFactory = MovieListViewModelFactory(movieDatabaseDao, application)
         viewModel = ViewModelProvider(this, viewModelFactory).get(MovieListViewModel::class.java)
 
-            viewModel.movieList.observe(viewLifecycleOwner, { movieList ->
+        val movieListAdapter = MovieListAdapter(
+            MovieListClickListener { movie ->
+                viewModel.onMovieListItemClicked(movie)
+            }
+        )
+        binding.movieListRv.adapter = movieListAdapter
+
+        viewModel.movieList.observe(viewLifecycleOwner, { movieList ->
+            movieList?.let{
+                movieListAdapter.submitList(movieList)
+            }
+        })
+
+        viewModel.navigateToMovieDetail.observe(viewLifecycleOwner, {movie ->
+            movie?.let {
+                this.findNavController().navigate(MovieListFragmentDirections.actionMovieListFragmentToMovieDetailFragment(movie))
+                viewModel.onMovieDetailNavigated()
+            }
+        })
+
+            /*viewModel.movieList.observe(viewLifecycleOwner, { movieList ->
                 movieList.forEach{ movie ->
                     val movieListItemBinding: MovieListItemBinding = DataBindingUtil.inflate(inflater, R.layout.movie_list_item, container, false)
                     movieListItemBinding.movie = movie
@@ -55,7 +77,7 @@ class MovieListFragment : Fragment() {
                 }
             }
 
-        )
+        )*/
         setHasOptionsMenu(true)
 
         return binding.root
