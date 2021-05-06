@@ -35,11 +35,11 @@ class MovieDetailFragment : Fragment() {
         movie = MovieDetailFragmentArgs.fromBundle(requireArguments()).movie
         binding.movie = movie
         for(md in movieDetails.list){
-            if(md.id == movie.id){
-                movieDetail = md;
+            if(md.id == 5L/*movie.id*/){
+                movieDetail = md
             }
         }
-        binding.movieDetail = movieDetail;
+        binding.movieDetail = movieDetail
         var genres = ""
         for(genre in movieDetail.genres){
             genres += genre

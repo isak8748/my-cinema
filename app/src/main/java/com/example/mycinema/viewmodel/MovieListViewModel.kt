@@ -8,9 +8,19 @@ import androidx.lifecycle.viewModelScope
 import com.example.mycinema.database.MovieDatabaseDao
 import com.example.mycinema.database.Movies
 import com.example.mycinema.model.Movie
+import com.example.mycinema.network.DataFetchStatus
+import com.example.mycinema.network.MovieResponse
 import kotlinx.coroutines.launch
 
 class MovieListViewModel(private val movieDatabaseDao: MovieDatabaseDao, application: Application) : AndroidViewModel(application) {
+
+
+    private val _dataFetchStatus = MutableLiveData<DataFetchStatus>()
+    val dataFetchStatus: LiveData<DataFetchStatus>
+        get() {
+            return _dataFetchStatus
+        }
+
 
     private val _movieList = MutableLiveData<List<Movie>>()
     val movieList: LiveData<List<Movie>>
@@ -18,15 +28,45 @@ class MovieListViewModel(private val movieDatabaseDao: MovieDatabaseDao, applica
             return _movieList
         }
 
-        init {
-            _movieList.postValue(Movies().list)
-        }
 
     private val _navigateToMovieDetail = MutableLiveData<Movie>()
     val navigateToMovieDetail: LiveData<Movie>
         get() {
             return _navigateToMovieDetail
         }
+
+    init {
+        getPopularMovies()
+        _dataFetchStatus.value = DataFetchStatus.LOADING
+    }
+
+    fun getPopularMovies() {
+        viewModelScope.launch {
+            try {
+                val movieResponse: MovieResponse =
+                    TMDBApi.movieListRetrofitService.getPopularMovies()
+                _movieList.value = movieResponse.results
+                _dataFetchStatus.value = DataFetchStatus.DONE
+            } catch(e: Exception) {
+                _dataFetchStatus.value = DataFetchStatus.ERROR
+                _movieList.value = arrayListOf()
+            }
+        }
+    }
+
+    fun getTopRatedMovies() {
+        viewModelScope.launch {
+            try {
+                val movieResponse: MovieResponse =
+                    TMDBApi.movieListRetrofitService.getTopRatedMovies()
+                _movieList.value = movieResponse.results
+                _dataFetchStatus.value = DataFetchStatus.DONE
+            } catch(e: Exception) {
+                _dataFetchStatus.value = DataFetchStatus.ERROR
+                _movieList.value = arrayListOf()
+            }
+        }
+    }
 
     fun getSavedMovies(){
         viewModelScope.launch{

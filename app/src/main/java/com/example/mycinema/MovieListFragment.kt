@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.GridLayoutManager
 import com.example.mycinema.adapter.MovieListAdapter
 import com.example.mycinema.adapter.MovieListClickListener
 import com.example.mycinema.database.MovieDatabase
@@ -16,6 +17,7 @@ import com.example.mycinema.database.MovieDatabaseDao
 import com.example.mycinema.database.Movies
 import com.example.mycinema.databinding.FragmentMovieListBinding
 import com.example.mycinema.databinding.MovieListItemBinding
+import com.example.mycinema.network.DataFetchStatus
 import com.example.mycinema.viewmodel.MovieListViewModel
 import com.example.mycinema.viewmodel.MovieListViewModelFactory
 import timber.log.Timber
@@ -53,6 +55,8 @@ class MovieListFragment : Fragment() {
         )
         binding.movieListRv.adapter = movieListAdapter
 
+        binding.movieListRv.layoutManager = GridLayoutManager(this.context, 3)
+
         viewModel.movieList.observe(viewLifecycleOwner, { movieList ->
             movieList?.let{
                 movieListAdapter.submitList(movieList)
@@ -66,18 +70,25 @@ class MovieListFragment : Fragment() {
             }
         })
 
-            /*viewModel.movieList.observe(viewLifecycleOwner, { movieList ->
-                movieList.forEach{ movie ->
-                    val movieListItemBinding: MovieListItemBinding = DataBindingUtil.inflate(inflater, R.layout.movie_list_item, container, false)
-                    movieListItemBinding.movie = movie
-                    movieListItemBinding.root.setOnClickListener{
-                        this.findNavController().navigate(MovieListFragmentDirections.actionMovieListFragmentToMovieDetailFragment(movie))
+
+        viewModel.dataFetchStatus.observe(viewLifecycleOwner, { status ->
+            status?.let {
+                when(status) {
+                    DataFetchStatus.LOADING -> {
+                        binding.statusImage.visibility = View.VISIBLE
+                        binding.statusImage.setImageResource(R.drawable.loading_animation)
                     }
-                    binding.movieListLl.addView(movieListItemBinding.root)
+                    DataFetchStatus.ERROR -> {
+                        binding.statusImage.visibility = View.VISIBLE
+                        binding.statusImage.setImageResource(R.drawable.ic_connection_error)
+                    }
+                    DataFetchStatus.DONE -> {
+                        binding.statusImage.visibility = View.GONE
+                    }
                 }
             }
+        })
 
-        )*/
         setHasOptionsMenu(true)
 
         return binding.root
@@ -87,23 +98,21 @@ class MovieListFragment : Fragment() {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        return when (item.itemId) {
+        when (item.itemId) {
             R.id.action_load_popular_movies -> {
-             true
+                viewModel.getPopularMovies()
             }
             R.id.action_load_top_rated_movies -> {
-                viewModel.addMovie()
-                Timber.i("Adding dummy movie")
-                true
+                viewModel.getTopRatedMovies()
             }
             R.id.action_load_saved_movies -> {
                 viewModel.getSavedMovies()
-                Timber.i("Getting saved movie")
-                true
+
             }
 
             else -> super.onOptionsItemSelected(item)
         }
+        return true
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
