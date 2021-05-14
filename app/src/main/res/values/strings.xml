@@ -13,4 +13,7 @@
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="movies_are_being_loaded">Movies are being loaded</string>
+    <string name="shows_the_movie_backdrop">Shows the Movie backdrop</string>
+    <string name="save_as_favorite">Save as favorite</string>
+    <string name="remove_from_favorites">Remove from favorites</string>
 </resources>

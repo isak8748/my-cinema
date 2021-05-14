@@ -4,6 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
+        <import type="android.view.View"/>
+
         <variable
             name="movie"
             type="com.example.mycinema.model.Movie" />
@@ -16,6 +19,9 @@
         <variable
             name="imdb_url"
             type="String" />
+        <variable
+            name="viewmodel"
+            type="com.example.mycinema.viewmodel.MovieDetailViewModel"/>
 
 
     </data>
@@ -33,7 +39,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:src="@tools:sample/avatars" />
+            tools:src="@tools:sample/avatars"
+            android:contentDescription="@string/shows_the_movie_backdrop"/>
 
         <TextView
             android:id="@+id/movie_detail_title"
@@ -44,39 +51,40 @@
             android:text="@{movie.title}"
             android:textSize="18sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/movie_detail_backdrop" />
+            app:layout_constraintTop_toBottomOf="@+id/movie_detail_backdrop"
+            android:contentDescription=""/>
 
         <TextView
             android:id="@+id/movie_detail_website"
+            android.textSize="12sp"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:autoLink="all"
             android:text="@{movie_detail.website}"
-            android.textSize="12sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/movie_detail_title" />
 
         <TextView
             android:id="@+id/movie_detail_genres"
+            android.textSize="12sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:text="@{genres_string}"
-            android.textSize="12sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/movie_detail_website" />
 
         <TextView
             android:id="@+id/movie_detail_imdb"
+            android.textSize="12sp"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:autoLink="all"
-            android.textSize="12sp"
             android:text="@{imdb_url.concat(movie_detail.imdb_id)}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/movie_detail_genres" />
@@ -99,6 +107,30 @@
             app:layout_constraintBottom_toTopOf="@+id/back_to_movie_list"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
+
+        <Button
+            android:id="@+id/save_to_database"
+            android:layout_width="204dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginBottom="8dp"
+            android:onClick="@{ () -> viewmodel.onSaveMovieButtonClicked(movie)}"
+            android:text="@string/save_as_favorite"
+            android:visibility="@{viewmodel.isFavorite  ? View.GONE : View.VISIBLE}"
+            app:layout_constraintBottom_toTopOf="@+id/to_third_fragment"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <Button
+            android:id="@+id/remove_from_database"
+            android:layout_width="204dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:onClick="@{ () -> viewmodel.onRemoveMovieButtonClicked(movie)}"
+            android:text="@string/remove_from_favorites"
+            android:visibility="@{viewmodel.isFavorite  ? View.VISIBLE : View.GONE}"
+            app:layout_constraintBottom_toTopOf="@+id/to_third_fragment"
+            app:layout_constraintEnd_toEndOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
