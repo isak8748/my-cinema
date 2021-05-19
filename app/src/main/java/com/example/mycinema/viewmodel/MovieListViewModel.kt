@@ -31,12 +31,6 @@ class MovieListViewModel(private val movieDatabaseDao: MovieDatabaseDao,
     private var popularSaved = false
 
 
-    /*private val _movieList = MutableLiveData<List<Movie>>()
-    val movieList: LiveData<List<Movie>>
-        get() {
-            return _movieList
-        }*/
-
     private val _favList = MutableLiveData<List<Movie>>()
     val favList: LiveData<List<Movie>>
         get(){
