@@ -138,24 +138,5 @@ class MovieListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        /*val movies = Movies()
-
-        val movieList = view.findViewById<LinearLayout>(R.id.movie_list_ll)
-
-        val movieItem = movieList.findViewById<View>(R.id.movie_1)
-        val movieTitle = movieItem.findViewById<TextView>(R.id.movie_title)
-        val moviePoster = movieItem.findViewById<ImageView>(R.id.movie_poster)
-
-        movieTitle.text = movies.list[0].title
-        Glide
-                .with(this)
-                .load(Constants.POSTER_IMAGE_BASE_URL + Constants.POSTER_IMAGE_WIDTH + movies.list[0].posterPath)
-                .into(moviePoster)
-
-
-         */
-        /*view.findViewById<Button>(R.id.button_first).setOnClickListener {
-            findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
-        }*/
     }
 }
