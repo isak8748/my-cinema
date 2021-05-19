@@ -9,7 +9,7 @@ import com.example.mycinema.model.Movie
 
 @Database(entities = [Movie::class], version = 1, exportSchema = false)
 abstract class CachedDatabase  : RoomDatabase(){
-    abstract val movieDatabaseDao: CachedDatabaseDao
+    abstract val cachedDatabaseDao: CachedDatabaseDao
 
     companion object {
 

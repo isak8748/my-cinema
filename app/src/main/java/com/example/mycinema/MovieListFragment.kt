@@ -12,9 +12,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.mycinema.adapter.MovieListAdapter
 import com.example.mycinema.adapter.MovieListClickListener
-import com.example.mycinema.database.MovieDatabase
-import com.example.mycinema.database.MovieDatabaseDao
-import com.example.mycinema.database.Movies
+import com.example.mycinema.database.*
 import com.example.mycinema.databinding.FragmentMovieListBinding
 import com.example.mycinema.databinding.MovieListItemBinding
 import com.example.mycinema.network.DataFetchStatus
@@ -31,6 +29,7 @@ class MovieListFragment : Fragment() {
     private lateinit var  viewModelFactory: MovieListViewModelFactory
 
     private lateinit var movieDatabaseDao: MovieDatabaseDao
+    private lateinit var cachedDatabaseDao: CachedDatabaseDao
 
     private var _binding: FragmentMovieListBinding? = null
     private val binding get() = _binding!!
@@ -47,7 +46,8 @@ class MovieListFragment : Fragment() {
 
         val application = requireNotNull(this.activity).application
         movieDatabaseDao = MovieDatabase.getInstance(application).movieDatabaseDao
-        viewModelFactory = MovieListViewModelFactory(movieDatabaseDao, application)
+        cachedDatabaseDao = CachedDatabase.getInstance(application).cachedDatabaseDao
+        viewModelFactory = MovieListViewModelFactory(movieDatabaseDao, cachedDatabaseDao, application)
         viewModel = ViewModelProvider(this, viewModelFactory).get(MovieListViewModel::class.java)
 
         val movieListAdapter = MovieListAdapter(
@@ -62,6 +62,12 @@ class MovieListFragment : Fragment() {
         viewModel.movieList.observe(viewLifecycleOwner, { movieList ->
             movieList?.let{
                 movieListAdapter.submitList(movieList)
+            }
+        })
+
+        viewModel.favList.observe(viewLifecycleOwner, { favList ->
+            favList?.let{
+                movieListAdapter.submitList(favList)
             }
         })
 
